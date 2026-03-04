@@ -1,0 +1,106 @@
+
+1.번호:1
+2.논문제목:발표논문 / 해양생물자원으로서 해조류 : 생물활성물질의 정제와 분자적 응용
+3.저자:홍용기(Yong Ki Hong)
+4.소속기관:한국조류학회
+5.발표년도: 2000
+6.논문집국제심포지움 일정 및 발표논문집 - 21세기, 해양환경과 해양생물자원의 전망
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=508c47ca1906d5ecffe0bdc3ef48d419&keyword=해양자원
+1.번호:2
+2.논문제목:수거된 해양폐기물 자원화 기술 개발(Ⅰ)
+3.저자:길상인(Sang-In Keel),윤진한(Jin-Han Yun),최연석(Yeon-Seok Choi),강창구(Chang-Gu Kang),유정석(Jeong-Seok Yu)
+4.소속기관:한국해양환경·에너지학회
+5.발표년도: 2002
+6.논문집한국해양환경·에너지학회지
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=09ec1e3541fcc118ffe0bdc3ef48d419&keyword=해양자원
+1.번호:3
+2.논문제목:조건부 가치측정법을 이용한 공해상 해양생명자원 확보의 경제적 가치 추정
+3.저자:진세준,권영주,최은철
+4.소속기관:해양환경안전학회
+5.발표년도: 2023
+6.논문집해양환경안전학회지
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=59e951e287ce111647de9c1710b0298d&keyword=해양자원
+1.번호:4
+2.논문제목:해양수산생명자원의 국내 접근 절차 관련 법제도의 문제점 및 개선방향 : 해양수산생명자원법과 유전자원법의 비교를 중심으로
+3.저자:최석문,박수진
+4.소속기관:해양환경안전학회
+5.발표년도: 2019
+6.논문집해양환경안전학회 학술발표대회 논문집
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=835fcb7716c865686aae8a972f9116fb&keyword=해양자원
+1.번호:5
+2.논문제목:공해상 해양생명자원에 대한 기업의 산업적 활용 의향에 관한 연구
+3.저자:장덕희,김윤재,진세준
+4.소속기관:해양환경안전학회
+5.발표년도: 2025
+6.논문집해양환경안전학회지
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=cf8ce1a5a84872cab7998d826d417196&keyword=해양자원
+1.번호:6
+2.논문제목:동아시아태평양 주요국가의 해양관리시스템 분석 : 해양질서관리와 해양자원관리를 중심으로
+3.저자:주종광
+4.소속기관:한국해양경찰학회
+5.발표년도: 2017
+6.논문집한국해양경찰학회 학술대회
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=437e1724024ae34f4884a65323211ff0&keyword=해양자원
+1.번호:7
+2.논문제목:21세기 신성장동력원 해양유전자원의 개발
+3.저자:박수진
+4.소속기관:한국해양수산개발원
+5.발표년도: 2009
+6.논문집해양국토21
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=576d3ce0af918302ffe0bdc3ef48d419&keyword=해양자원
+1.번호:8
+2.논문제목:중국 해양자원개발의 해양강국 전략에 대한 함의
+3.저자:주현희(Hyun-Hee Ju)
+4.소속기관:한국해양비즈니스학회
+5.발표년도: 2014
+6.논문집해양비즈니스
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=2e5dd07be5a77108b7998d826d417196&keyword=해양자원
+1.번호:9
+2.논문제목:우리나라 관할해역 내 해양자원 관리현황 및 정책 개선방향
+3.저자:박수진(Su Jin Park)
+4.소속기관:한국해양환경·에너지학회
+5.발표년도: 2014
+6.논문집한국해양환경·에너지학회 학술대회논문집
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=282dfd2189931dee6aae8a972f9116fb&keyword=해양자원
+1.번호:10
+2.논문제목:해양생물자원 국외반출제도 현황 및 향후 입법 과제
+3.저자:최석문(Seokmoon Choi),박수진(Sunjin Park)
+4.소속기관:한국해양환경·에너지학회
+5.발표년도: 2017
+6.논문집한국해양환경·에너지학회 학술대회논문집
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=1da14410066c5216b36097776a77e665&keyword=해양자원
+1.번호:11
+2.논문제목:경주 동해안권의 해양과학자원과 문화자원 융합을 통한 문무대왕 재조명 및 경주지역 해양교육관광 활성화 방안
+3.저자:김윤배(Yun-Bae KIM),윤성진(Sung-Jin YOON)
+4.소속기관:한국수산해양교육학회
+5.발표년도: 2017
+6.논문집수산해양교육연구
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=8697010236a2cee2b7998d826d417196&keyword=해양자원
+1.번호:12
+2.논문제목:해양치유자원 기반 치유관광 콘텐츠 개발을 통한 해양관광산업 성장 전략
+3.저자:이용일
+4.소속기관:한국해양관광학회
+5.발표년도: 2025
+6.논문집해양관광학연구
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=917905f33bfb55394884a65323211ff0&keyword=해양자원
+1.번호:13
+2.논문제목:국가관할권 외측 해양유전자원에 대한 국제 논의동향 및 향후 전망
+3.저자:김선화
+4.소속기관:해양환경안전학회
+5.발표년도: 2013
+6.논문집해양환경안전학회 학술발표대회 논문집
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=1f4992d29fdc98b96aae8a972f9116fb&keyword=해양자원
+1.번호:14
+2.논문제목:신해양거버넌스 출범에 따른 해양생명자원법의 재정비 방안에 관한 고찰
+3.저자:박수진(Su Jin Park)
+4.소속기관:한국해양환경·에너지학회
+5.발표년도: 2014
+6.논문집한국해양환경·에너지학회 학술대회논문집
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=e42a05bd22041fe3d18150b21a227875&keyword=해양자원
+1.번호:15
+2.논문제목:국가관할권 이원에서의 해양유전자원 개발에 관한 국제적 논의 동향
+3.저자:김선화
+4.소속기관:해양환경안전학회
+5.발표년도: 2012
+6.논문집해양환경안전학회 학술발표대회 논문집
+.논문url정보/search/detail/DetailView.do?p_mat_type=1a0202e37d52c72d&control_no=3c6134d45e1284356aae8a972f9116fb&keyword=해양자원
