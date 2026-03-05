@@ -1,0 +1,35 @@
+1. 모듈을 로딩한다 
+2. 수집된 데이터를 저장할 파일 이름 입력 받는다. 
+3. 크롬 드라이버 설정 및 웹페이지를 연다. 
+4. 페이지의 항목을 선택한다. 이때 나는 XPATH를 사용했다. 
+<a href="/req/mayor_hope/mayor_hope.do">
+                            <div class="mv_banner_box">
+                                <div class="mv_linkbanner hdout_item">
+                                    <div class="mv_linkbanner_text">
+                                        <div class="linkbanner_main">시장에게 바란다!</div>
+                                        <div class="linkbanner_sub"><div>서울시장에게</div> <div class="mc_banner_category" style="margin-top:1px">시정과 관련된 제안, 개선사항 <span style="color: #737886;">등</span></div><div style="margin-top:1px">의견을 제시해 주세요!</div></div>
+                                    </div>
+                                    <div class="mv_linkbanner_img"></div>
+                                </div>
+                             </div>
+                        </a>
+
+//*[@id="content"]/div[2]/a
+//*[@id="content"]/div[2]/a/div
+//*[@id="content"]/div[2]/a/div/div
+
+
+5. Beautiful Soup 로 본문 내용만 추출한다. 
+6. 검색 건수를 보여주고 수집할 건수 입력 받기
+
+
+7. 한페이지당 목록 10개가 있음. 다음 페이지로 넘겨야 함. 
+8. 데이터를 수집하기 위해 빈 리스트를 만든다. 
+9. 반복문을 실행한다. 
+한 페이지 안에 목록 10개가 있다. 
+첫번째 목록부터 본다. 
+제목을 수집한다. 
+제목을 클릭하여, 첫번째 목록의 상세 페이지에 들어간다. 
+상세 페이지 안에 공개일, 상담내용을 수집한다. 
+이전 페이지에 돌아가서, 
+10개 목록이 있을때 2번째를 마찬가지로 수집한다. 

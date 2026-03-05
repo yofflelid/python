@@ -1,0 +1,75 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+import time
+
+f_dir = input("2.파일을 저장할 폴더명만 쓰세요(기본값:c:\\py_temp\\):")
+if f_dir == '' :
+    f_dir="c:\\py_temp\\"
+
+s = Service("c:/py_temp/chromedriver.exe")
+driver = webdriver.Chrome(service=s)
+
+url = 'https://eungdapso.seoul.go.kr/main.do'
+driver.get(url)
+driver.maximize_window()
+time.sleep(2)
+
+
+driver.find_element(By.XPATH,'//*[@id="content"]/div[2]/a/div/div').click()
+time.sleep(2)
+
+from bs4 import BeautifulSoup
+html_1 = driver.page_source
+soup_1 = BeautifulSoup(html_1, 'html.parser')
+
+html_1 = driver.page_source
+soup_1 = BeautifulSoup(html_1, 'html.parser')
+
+import math
+
+total_cnt = soup_1.find('span','rplk_count').get_text()
+total_cnt = int(total_cnt.replace('건',''))
+
+print('총 %s 건의 민원신청이 검색되었습니다' % total_cnt)
+
+cnt = int(input('이 중에서 몇 건을 수집하시겠습니까?: '))
+
+page_cnt = math.ceil(cnt / 10)
+
+print('%s 건의 데이터를 수집하기 위해 %s 페이지의 게시물을 조회합니다.' %(cnt,page_cnt))
+print("\n")
+
+
+html_1 = driver.page_source
+soup_1 = BeautifulSoup(html_1, 'html.parser')
+
+# 제목
+title = soup_1.find('h3','sclinkage_title').get_text()
+
+# 작성일
+date = soup_1.find_all('span','sclinkage_evalue')[0].get_text()
+
+# 내용
+content = soup_1.find('span','rp_indata').get_text("\n")
+
+print("제목:", title)
+print("작성일:", date)
+print("내용:", content)
+
+
+
+
+
+
+
+#    1 페이지 반복
+#      ↓
+#    2 게시글 10개 찾기
+#      ↓
+#    3 게시글 클릭
+#      ↓
+#    4 제목 / 날짜 / 내용 수집
+#      ↓
+#    5 목록으로 돌아가기
