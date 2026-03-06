@@ -1,0 +1,146 @@
+1 # riss.kr 에서 특정 키워드로 논문 / 학술 자료 검색하기
+2 #Step 1. 필요한 모듈을 로딩합니다
+3 from selenium import webdriver
+4 from selenium.webdriver.common.by import By
+5 from selenium.webdriver.common.keys import Keys
+6 from selenium.webdriver.chrome.service import Service
+7 import time
+8
+9 #Step 2. 사용자에게 검색 관련 정보들을 입력 받습니다.
+10 print("=" *100)
+11 print(" 이 크롤러는 RISS 사이트의 논문 및 학술자료 수집용 웹크롤러입니다.")
+12 print("=" *100)
+13 query_txt = input('1.수집할 자료의 키워드는 무엇입니까? : ')
+14
+15 #Step 3. 수집된 데이터를 저장할 파일 이름 입력받기
+16 ft_name = input('2.결과를 저장할 txt형식의 파일명을 쓰세요(예: c:\\py_temp\\riss.txt): ')
+17 fc_name = input('3.결과를 저장할 csv형식의 파일명을 쓰세요(예: c:\\py_temp\\riss.csv): ')
+18 fx_name = input('4.결과를 저장할 xlsx형식의 파일명을 쓰세요(예: c:\\py_temp\\riss.xlsx): ')
+19
+20 #Step 4. 크롬 드라이버 설정 및 웹 페이지 열기
+21 s = Service("c:/py_temp/chromedriver.exe")
+22 driver = webdriver.Chrome(service=s)
+23
+24 url = 'https://www.riss.kr/'
+25 driver.get(url)
+26 time.sleep(5)
+27 driver.maximize_window()
+28
+29 #Step 5. 자동으로 검색어 입력 후 조회하기
+30 element = driver.find_element(By.ID,'query')
+31 driver.find_element(By.ID,'query').click( )
+32 element.send_keys(query_txt)
+33 element.send_keys("\n")
+34
+35 #Step 6.학위 논문 선택하기
+36 driver.find_element(By.LINK_TEXT,'학위논문').click()
+37 time.sleep(2)
+38
+39 #Step 7.Beautiful Soup 로 본문 내용만 추출하기
+40 from bs4 import BeautifulSoup
+41 html_1 = driver.page_source
+42 soup_1 = BeautifulSoup(html_1, 'html.parser')
+43
+44 content_1 = soup_1.find('div','srchResultListW').find_all('li')
+45 for i in content_1 :
+46 print(i.get_text().replace("\n",""))
+47
+48 #Step 8. 총 검색 건수를 보여주고 수집할 건수 입력받기
+49 import math
+50 total_cnt = soup_1.find('div','searchBox pd').find('span','num').get_text()
+51 print('키워드 %s (으)로 총 %s 건의 학위논문이 검색되었습니다' %(query_txt,total_cnt))
+52 collect_cnt = int(input('이 중에서 몇 건을 수집하시겠습니까?: '))
+53 collect_page_cnt = math.ceil(collect_cnt / 10)
+54 print('%s 건을 수집하기 위해 %s 페이지를 조회합니다.' %(collect_cnt,collect_page_cnt))
+55 print('=' *80)
+56
+57 #Step 9. 각 항목별로 데이터를 추출하여 리스트에 저장하기
+58 no2 = [ ] #번호 저장
+59 title2 = [ ] #논문제목 저장
+60 writer2 = [ ] #논문저자 저장
+61 org2 = [ ] #소속기관 저장
+62 no = 1
+63
+64 for a in range(1, collect_page_cnt + 1) :
+65
+66 html_2 = driver.page_source
+67 soup_2 = BeautifulSoup(html_2, 'html.parser')
+68
+69 content_2 = soup_2.find('div','srchResultListW').find_all('li')
+70
+71 for b in content_2 :
+72 #1. 논문제목 있을 경우만
+73 try :
+74 title = b.find('div','cont').find('p','title').get_text()
+75 except :
+76 continue
+77 else :
+78 f = open(ft_name, 'a' , encoding="UTF-8")
+79 print('1.번호:',no)
+80 no2.append(no)
+81 f.write('\n'+'1.번호:' + str(no))
+82
+83 print('2.논문제목:',title)
+84 title2.append(title)
+85 f.write('\n' + '2.논문제목:' + title)
+86
+87 writer = b.find('span','writer').get_text()
+88 print('3.저자:',writer)
+89 writer2.append(writer)
+90 f.write('\n' + '3.저자:' + writer)
+91
+92 org = b.find('span','assigned').get_text()
+93 print('4.소속기관:' , org)
+94 org2.append(org)
+95 f.write('\n' + '4.소속기관:' + org + '\n')
+96
+97 f.close( )
+98
+99 no += 1
+100 print("\n")
+101
+102 if no > collect_cnt :
+103 break
+104
+105 time.sleep(1) # 페이지 변경 전 1초 대기
+106
+107 a += 1
+108 b = str(a)
+109
+110 try :
+111 driver.find_element(By.LINK_TEXT ,'%s' %b).click()
+112 except :
+113 driver.find_element(By.LINK_TEXT('다음 페이지로')).click()
+114 print("요청하신 작업이 모두 완료되었습니다")
+115
+116 # Step 10. 수집된 데이터를 xlsx와 csv 형태로 저장하기
+117 import pandas as pd
+118
+119 df = pd.DataFrame()
+120 df['번호']=no2
+121 df['제목']=pd.Series(title2)
+122 df['저자']=pd.Series(writer2)
+123 df['소속(발행)기관']=pd.Series(org2)
+124
+125 # xls 형태로 저장하기
+126 df.to_excel(fx_name, index=False, encoding="utf-8" , engine='openpyxl')
+127
+128 # csv 형태로 저장하기
+129 df.to_csv(fc_name, index=False, encoding="utf-8-sig")
+130 print('요청하신 데이터 수집 작업이 정상적으로 완료되었습니다')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

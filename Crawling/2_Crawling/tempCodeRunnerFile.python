@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title> HTML 연습 </title>
+    </head>
+    <body>
+        <h1> 나의 좌우명 - h1 크기 </h1>
+        <h5> 꼭 이루자 ! - h5 크기</h5>
+        <p> 할 수 있다고 생각을 하든 
+            할 수 없다고 생각을 하든 생각대로 됩니다 !  </p> 
+        <p> 얼마나 </p> 
+        <p> 멋진 삶을 사는가는 <br>
+        <p> 스스로 결정하고 만들어가는 것입니다. </p> 
+    </body>
+</html>

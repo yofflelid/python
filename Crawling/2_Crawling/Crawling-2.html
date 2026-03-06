@@ -1,0 +1,36 @@
+# Beautiful Soup 예제1
+
+from bs4 import BeautifulSoup
+ex1 = '''
+<html>
+    <head>
+        <title> HTML 연습 </title>
+    </head>
+    <body>
+        <p align = "center"> text 1 </p>
+        <img src="c:\\temp\\image\\솔개.png">
+    </body>
+</html>'''
+
+soup = BeautifulSoup(ex1, 'html.parser')
+print( soup.find('title'))
+print( soup.find('p'))
+
+
+# Beautiful Soup 예제 4
+
+from bs4 import BeautifulSoup
+ex1 = '''
+<html>
+    <head>
+        <title> HTML 연습 </title>
+    </head>
+    <body>
+        <p align="center"> text 1 </p>
+        <p align="center"> text 2 </p>
+        <p align="center"> text 3 </p>
+        <img src="c:\\py_temp\\image\\솔개.png">
+    </body>
+</html>'''
+    
+    
