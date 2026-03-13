@@ -1,0 +1,150 @@
+유튜브 영상의 댓글 수집하기 
+
+일단, 숏츠 영상으로 한정 
+
+
+1번 리뷰를 수집할 url 주소를 입력받아 검색하기
+2번 특정 키워드를 유튜브 검색 후, 원하는 영상을 선택해서 댓글 수집하기 
+( 숏츠만 볼거임, 몇개 수집할건지 입력 받고, 그 갯수만큼 위에서 뽑기 
+
+
+
+두 가지 방식 중 원하는 방식을 입력받는다. 
+
+수집하고 싶은 댓글 갯수를 입력 받는다. 
+일단 몇개든 0개 빼고 입력받기 
+이후에 또 거르기 
+
+
+숏츠영상 url에 접속한다. 
+
+제목을 수집한다. 
+
+
+숏츠 댓글을 보기 위해서 
+댓글을 클릭한다. 
+
+
+여기서 aria-label="댓글 22개 보기" 이거 선택해서 보는게 나은가?? -> 댓글 누르는걸로 함 
+
+
+
+
+그러면 오른쪽에 댓글창이 열린다. 
+마우스 커서를 댓글창 위로 이동시킨다. 
+
+이걸 픽셀로 하면, 모니터 마다 다르니까 댓글창 위에 좋아요 위치를 잡아서 하던지 하라고 하더라고
+그건 어떻게 하지? 
+
+일단 ai가 코드 만들어줬는데, 무슨 내용인지 이해는 못했음
+
+수집하고 싶은 댓글 갯수만큼 얻기 위해, 마우스 휠을 천천히 아래로 이동시킨다.
+원하는 댓글 갯수 만큼 댓글을 수집한다. 
+원하는 댓글 갯수보다 많은 댓글을 수집하고 싶다고 입력받으면, 
+자동으로 실제 댓글 갯수 만큼만 수집되도록 설계 
+
+
+
+동영상 번호
+리뷰 번호
+동영상 url
+
+동영상 제목
+
+
+
+여기서부터 니가 나랑 더 코드를 짜면되거든. 
+일단, 댓글창 열고 스크롤 내리는 것 까지 짜긴 했어. 
+
+
+
+
+댓글창 전체를 잡고, 
+그 안에 댓글 하나의 각각을 잡고
+그 안에 개별 요소인걸 잡으면 되는건가?
+
+댓글작성자명
+댓글작성일자 
+댓글내용
+좋아요갯수 
+
+
+
+총 댓글수도 몇개인지 보고 싶은데, 
+댓글 수 몇개 수집할건지를 이때 물어봤어야 했나? 위에서 물어봤거든 
+총 댓글 몇개중에 몇개를 보시겠습니까? 하고 뜨는게 좋지 않나? 
+
+
+
+지금 내가 여기까지 코드를 썼는데, 
+댓글 스크롤을 다 내렸잖아.
+그러면 내린 만큼, 원하는 건수만큼, 댓글을 뽑아야 하는데 그건 어떻게 해? 
+그리고 저장할때는 아래랑 같은 형식으로 저장할거야. 
+그건 최대한 수정하지마 
+
+위 정보를 수집하고, 
+수집한 자료 항목을 행으로 지정해서 표 형식으로 저장 
+csv xlsx 파일로 저장한다. 
+
+
+
+
+
+이제 저장만 하면 되겠다. 
+
+#Step 3.저장될 파일 경로와 이름을 지정합니다 # 이미지 파일, 텍스트 파일 따로 저장하고 나중에 합침
+sec_name = '베스트셀러'
+query_txt='아마존'
+
+n = time.localtime()
+s1 = '%04d-%02d-%02d-%02d-%02d-%02d' % (n.tm_year, n.tm_mon, n.tm_mday, n.tm_hour, n.tm_min, n.tm_sec)
+
+os.makedirs(f_dir+s1+'-'+query_txt+'-'+sec_name)
+os.chdir(f_dir+s1+'-'+query_txt+'-'+sec_name)
+
+ff_dir=f_dir+s1+'-'+query_txt+'-'+sec_name
+ff_name=f_dir+s1+'-'+query_txt+'-'+sec_name+'\\'+s1+'-'+query_txt+'-'+sec_name+'.txt'
+fc_name=f_dir+s1+'-'+query_txt+'-'+sec_name+'\\'+s1+'-'+query_txt+'-'+sec_name+'.csv'
+fx_name=f_dir+s1+'-'+query_txt+'-'+sec_name+'\\'+s1+'-'+query_txt+'-'+sec_name+'.xlsx'
+
+# 제품 이미지 저장용 폴더 생성
+img_dir = ff_dir+"\\images"
+os.makedirs(img_dir)
+os.chdir(img_dir)
+    
+s_time = time.time( )
+
+
+
+
+
+# print("데이터프레임 크기:", co_best_seller.shape)
+# print(co_best_seller.head())
+# print(co_best_seller.tail())
+
+# # csv 형태로 저장하기
+# co_best_seller.to_csv(fc_name, encoding="utf-8-sig", index=False)
+
+# # 엑셀 형태로 저장하기
+# co_best_seller.to_excel(fx_name, index=False, engine='openpyxl')
+
+
+
+# e_time = time.time()
+# t_time = e_time - s_time
+
+# print("\n")
+# print("=" * 100)
+# print("1. 요청된 총 %s 건 중에서 실제 크롤링 된 건수는 %s 건입니다" % (cnt, len(co_best_seller)))
+# print("2. 총 소요시간은 %s 초 입니다" % round(t_time, 1))
+# print("3. csv 파일명 : %s" % fc_name)
+# print("4. xlsx 파일명 : %s" % fx_name)
+# print("=" * 100)
+
+
+
+
+앞으로 차근차근 작은 것부터 실행되는지 확인하면서 나랑 코드를 같이 짜자  
+
+
+
