@@ -1,0 +1,294 @@
+#Step 1. 필요한 모듈과 라이브러리를 로딩합니다.
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+import time
+import math
+import os
+import random
+import unicodedata # 해시태그 수집 중 자음/모음 분리현상 방지용 모듈
+import urllib.request
+import urllib
+import pandas as pd
+
+#Step 2. 사용자에게 필요한 정보들을 입력 받기
+print("=" *80)
+print("인스타그램 해쉬태그와 이미지 수집하기")
+print("=" *80)
+
+v_id = input("1.인스타그램의 ID를 입력하세요: ")
+v_passwd = input("2.인스타그램의 비밀번호를 입력하세요: ")
+query_txt = input("3.검색할 해쉬태그를 입력하세요(예: 강남맛집): ")
+try :
+    cnt = int( input('4.수집할 건수는 총 몇 건입니까?(기본값:10): '))
+except ValueError :
+    cnt = 10
+    print('기본값인 10 건으로 수집을 진행합니다.')
+page_cnt = math.ceil( cnt / 10)
+f_dir=input('5.파일이 저장될 경로만 쓰세요(기본경로 : c:\\py_temp\\ ) : ')
+if f_dir =='' :
+    f_dir = "c:\\py_temp\\"
+
+#Step 3.결과를 저장할 폴더명과 파일명을 설정하고 폴더를 생성하기
+n = time.localtime()
+s = '%04d-%02d-%02d-%02d-%02d-%02d' % (n.tm_year, n.tm_mon, n.tm_mday, n.tm_hour, n.tm_min, n.tm_sec)
+
+sec_name='인스타그램'
+img_dir = f_dir+s+'-'+query_txt+'-'+sec_name+'\\'+'image'
+
+os.makedirs(img_dir)
+os.chdir(img_dir)
+
+fc_name=f_dir+s+'-'+query_txt+'-'+sec_name+'\\'+s+'-'+query_txt+'-'+sec_name+'.csv'
+fx_name=f_dir+s+'-'+query_txt+'-'+sec_name+'\\'+s+'-'+query_txt+'-'+sec_name+'.xlsx'
+
+# Step 4. 인스타그램 접속 후 자동 로그인 하기
+s_time = time.time( )
+s = Service("c:/py_temp/chromedriver.exe")
+driver = webdriver.Chrome(service=s)
+url = "https://www.instagram.com/"
+driver.get(url)
+time.sleep(random.randrange(1,5))
+
+print("\n")
+print("요청하신 데이터를 추출중이오니 잠시만 기다려 주세요~~~~^^")
+print("\n")
+
+#ID와 비번 입력후 로그인하기
+eid = driver.find_element(By.NAME,'email')
+for a in v_id :
+    eid.send_keys(a)
+    time.sleep(0.3)
+epwd = driver.find_element(By.NAME,'pass')
+for b in v_passwd :
+    epwd.send_keys(b)
+    time.sleep(0.5)
+#driver.find_element(By.XPATH, '//*[@id="login_form"]/div/div[1]/div/div[3]/div/div/div').click()
+#driver.find_element(By.XPATH,'//button[@type="submit"]').click()
+driver.find_element(By.CSS_SELECTOR, 'div[aria-label="로그인"]').click()
+time.sleep(10)
+
+driver.find_element(By.XPATH,'//*[contains(@id,"mount_0_0")]/div/div/div[2]/div/div/div[1]/div[1]/div[2]/section/main/div/div/div/div').click()
+
+driver.find_element(By.XPATH, '//button[contains(text(),"나중에")]').click()
+time.sleep(5)
+
+
+element = driver.find_element(By.CSS_SELECTOR,'input[placeholder="검색"]')
+for c in query_txt :
+    element.send_keys(c)
+    time.sleep(0.2)
+time.sleep(3)
+element.send_keys("\n")
+element.send_keys("\n")
+time.sleep(5)
+
+time.sleep(3)
+
+results = driver.find_elements(By.XPATH, '//div[contains(@class,"x9f619")]//a')
+print("검색결과 개수:", len(results))
+
+results[0].click()
+time.sleep(5)
+
+# Step 6. 전체 게시물의 원본 URL 추출하기
+item=[ ] # 인스타그램 URL 주소 저장할 리스트
+item2=[ ] # 중복값을 제거한 최종 URL 주소를 저장할 리스트
+
+# 자동 스크롤다운 함수
+def scroll_down(driver):
+    driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
+    time.sleep(5)
+
+print('요청하신 데이터를 수집중이니 잠시만 기다려 주세요~^^')
+print()
+
+a = 1
+while (a <= page_cnt):
+    scroll_down(driver)
+
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
+
+#    all_a = soup.find('article','KC1QD').find_all('a')
+    all_a = soup.select('a[href*="/p/"]')
+    
+    for i in all_a:
+        url = i['href']
+        item.append(url)
+        item2 = pd.Series(item).drop_duplicates()
+
+    if len(item2) >= cnt :
+        break
+    a += 1
+print('요청하신 데이터를 수집중이니 잠시만 더 기다려 주세요~^^')
+
+# 추출된 URL 사용하여 전체 URL 완성하기
+full_url=[ ]
+url_cnt = 1
+print('= 수집될 인스타그램 주소는 아래와 같습니다 =========')
+for x in item2 :
+    url = 'https://www.instagram.com' + x
+    full_url.append(url)
+    print(url_cnt,':',url)
+
+    if url_cnt > cnt:
+        break
+    url_cnt += 1
+print('========================================')
+print()
+
+
+
+
+imgs = soup.find_all('img')
+
+for img in imgs:
+    img_src = img.get('src')
+    img_alt = img.get('alt', '')
+    
+    if img_src and 'cdninstagram.com' in img_src and '프로필 사진' not in img_alt:
+        print("최종 선택된 이미지 주소 :", img_src)
+        print("최종 선택된 alt :", img_alt)
+        break
+
+
+요청하신 데이터를 추출중이오니 잠시만 기다려 주세요~~~~^^
+
+
+================================================================================
+인스타그램 해쉬태그와 이미지 수집하기
+================================================================================
+검색결과 개수: 55
+---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+Cell In[97], line 7
+      4 results = driver.find_elements(By.XPATH,'//div[@role="none"]//a')
+      6 # 첫번째 결과 클릭
+----> 7 results[0].click()
+      9 time.sleep(5)
+
+IndexError: list index out of range
+---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+Cell In[274], line 8
+      3 # 검색 결과 중 첫번째 클릭
+      4 #driver.find_element(By.XPATH,'//*[@id="mount_0_0_s7"]/div/div/div[2]/div/div/div[1]/div[1]/div[2]/section/nav/div/header/div/div/div[1]/div/div/div/div/div/div[3]/div/div/div/div/div/div/div[1]/a/div[1]').click()
+      5 #time.sleep(5)
+      6 results = driver.find_elements(By.XPATH,'//*[@id="mount_0_0_s7"]/div/div/div[2]/div/div/div[1]/div[1]/div[2]/section/nav/div/header/div/div/div[1]/div/div/div/div/div/div[3]/div/div/div/div/div/div/div[1]/a/div[1]')
+----> 8 results[0].click()
+     10 time.sleep(5)
+
+IndexError: list index out of range
+요청하신 데이터를 수집중이니 잠시만 기다려 주세요~^^
+
+요청하신 데이터를 수집중이니 잠시만 더 기다려 주세요~^^
+= 수집될 인스타그램 주소는 아래와 같습니다 =========
+1 : https://www.instagram.com/tasty.gangnam/p/DUhQXvikV-t/
+2 : https://www.instagram.com/tasty.gangnam/p/DUZ9cLoEXrl/
+3 : https://www.instagram.com/tasty.gangnam/p/DVpWm_WEV_4/
+4 : https://www.instagram.com/tasty.gangnam/p/DVh9GRkkTqC/
+5 : https://www.instagram.com/tasty.gangnam/p/DVhoM5MiUkJ/
+6 : https://www.instagram.com/tasty.gangnam/p/DVfe5c8EQgd/
+7 : https://www.instagram.com/tasty.gangnam/p/DVfDY5wCRuO/
+8 : https://www.instagram.com/tasty.gangnam/p/DVczRxLkZM4/
+9 : https://www.instagram.com/tasty.gangnam/p/DVceoHtklup/
+10 : https://www.instagram.com/tasty.gangnam/p/DVaWeS-EfD7/
+11 : https://www.instagram.com/tasty.gangnam/p/DVaB703kfMQ/
+========================================
+
+#강남맛집
+#강남카페
+#강남술집
+#강남데이트
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+...
+
+
+
+
+Output is truncated. View as a scrollable element or open in a text editor. Adjust cell output settings...
+========================================================================================================================
+1.총 소요시간: 1581.4 초
+2.총 저장 건수: 12 건 
+3.csv파일 저장 경로: c:\py_temp\2026-03-09-15-41-05-강남맛집-인스타그램\2026-03-09-15-41-05-강남맛집-인스타그램.csv
+4.xls파일 저장 경로: c:\py_temp\2026-03-09-15-41-05-강남맛집-인스타그램\2026-03-09-15-41-05-강남맛집-인스타그램.xlsx
+5.이미지파일 저장 경로: c:\py_temp\2026-03-09-15-41-05-강남맛집-인스타그램\image
+========================================================================================================================
+src = https://instagram.fjog8-1.fna.fbcdn.net/v/t51.2885-19/573323465_1219825463302212_7278921664109726296_n.png?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xNTAuYzIifQ&_nc_ht=instagram.fjog8-1.fna.fbcdn.net&_nc_cat=1&_nc_oc=Q6cZ2QHqaPW7JEq_aeQ8gIDeY6rUMc_CO5VMiAhYmgaP57yGuEhrLOed8069nQ09gsrxkE0&_nc_ohc=S3EIp504ctYQ7kNvwHfIEd6&_nc_gid=RaUAP4b8ryGtptaE-XrUdw&edm=AGqCYasBAAAA&ccb=7-5&ig_cache_key=YW5vbnltb3VzX3Byb2ZpbGVfcGlj.3-ccb7-5&oh=00_AfxuGK3WBQY4i7PxYcTZf6ks7tNdIXi2tRv8zLSdDA4yow&oe=69B438EA&_nc_sid=6c5dea
+alt = yeonjudata님의 프로필 사진
+====================================================================================================
+src = https://scontent-icn2-1.cdninstagram.com/v/t51.2885-19/364257856_6674886612569334_3127096616997425070_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-icn2-1.cdninstagram.com&_nc_cat=106&_nc_oc=Q6cZ2QH_ZKRt3x8fnl6fjxC6heqMZy6uhgLhzvASOlFk06Sb4oK0F-NfJLua101TJ5844AU&_nc_ohc=ksOysdFhksAQ7kNvwFBEjJF&_nc_gid=IOK2erPwpOrC4HlslnHB2A&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfxYHI4dobF-HALH75fZZqy_6VDaZ02ly0A9OuHxaZQw9A&oe=69B43C7E&_nc_sid=10d13b
+alt = tasty.gangnam님의 프로필 사진
+====================================================================================================
+src = https://scontent-icn2-1.cdninstagram.com/v/t51.2885-19/364257856_6674886612569334_3127096616997425070_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-icn2-1.cdninstagram.com&_nc_cat=106&_nc_oc=Q6cZ2QH_ZKRt3x8fnl6fjxC6heqMZy6uhgLhzvASOlFk06Sb4oK0F-NfJLua101TJ5844AU&_nc_ohc=ksOysdFhksAQ7kNvwFBEjJF&_nc_gid=IOK2erPwpOrC4HlslnHB2A&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfxYHI4dobF-HALH75fZZqy_6VDaZ02ly0A9OuHxaZQw9A&oe=69B43C7E&_nc_sid=10d13b
+alt = tasty.gangnam님의 프로필 사진
+====================================================================================================
+src = https://scontent-icn2-1.cdninstagram.com/v/t51.2885-19/39160898_2106636696216778_3900107828374798336_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby45NDUuYzIifQ&_nc_ht=scontent-icn2-1.cdninstagram.com&_nc_cat=110&_nc_oc=Q6cZ2QH_ZKRt3x8fnl6fjxC6heqMZy6uhgLhzvASOlFk06Sb4oK0F-NfJLua101TJ5844AU&_nc_ohc=OTZhoqGfhZUQ7kNvwHYsPSq&_nc_gid=IOK2erPwpOrC4HlslnHB2A&edm=APs17CUBAAAA&ccb=7-5&oh=00_Afz4mMAi5PCH8oPF5YGFWb6_LZpslIu0DEt0nC9kxfILqg&oe=69B451C2&_nc_sid=10d13b
+alt = taste.jeonju님의 프로필 사진
+====================================================================================================
+src = https://scontent-icn2-1.cdninstagram.com/v/t51.2885-19/364257856_6674886612569334_3127096616997425070_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-icn2-1.cdninstagram.com&_nc_cat=106&_nc_oc=Q6cZ2QH_ZKRt3x8fnl6fjxC6heqMZy6uhgLhzvASOlFk06Sb4oK0F-NfJLua101TJ5844AU&_nc_ohc=ksOysdFhksAQ7kNvwFBEjJF&_nc_gid=IOK2erPwpOrC4HlslnHB2A&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfxYHI4dobF-HALH75fZZqy_6VDaZ02ly0A9OuHxaZQw9A&oe=69B43C7E&_nc_sid=10d13b
+alt = tasty.gangnam님의 프로필 사진
+====================================================================================================
+src = https://scontent-icn2-1.cdninstagram.com/v/t51.2885-19/401043473_1001189097610445_1329953907555838607_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-icn2-1.cdninstagram.com&_nc_cat=105&_nc_oc=Q6cZ2QH_ZKRt3x8fnl6fjxC6heqMZy6uhgLhzvASOlFk06Sb4oK0F-NfJLua101TJ5844AU&_nc_ohc=2BlgItwanuAQ7kNvwFaf4eK&_nc_gid=IOK2erPwpOrC4HlslnHB2A&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfyivcKM6wucUY456dhwdZZ1o6HtVDPrRUqGXbPkV6OwEw&oe=69B44A44&_nc_sid=10d13b
+alt = tasty.cheonan님의 프로필 사진
+====================================================================================================
+src = https://scontent-icn2-1.cdninstagram.com/v/t51.2885-19/182997817_473233787221981_7660786603485021399_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-icn2-1.cdninstagram.com&_nc_cat=101&_nc_oc=Q6cZ2QH_ZKRt3x8fnl6fjxC6heqMZy6uhgLhzvASOlFk06Sb4oK0F-NfJLua101TJ5844AU&_nc_ohc=2m4b25Ir9ikQ7kNvwF4lon2&_nc_gid=IOK2erPwpOrC4HlslnHB2A&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfzGupipjRxOiWy6szx2D8ozjHEKpb-bboJ5N7veCLVZ1Q&oe=69B4504A&_nc_sid=10d13b
+alt = 90_s.jin님의 프로필 사진
+====================================================================================================
+src = https://scontent-icn2-1.cdninstagram.com/v/t51.2885-19/57194667_609258462883509_4273713517191757824_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby42MDAuYzIifQ&_nc_ht=scontent-icn2-1.cdninstagram.com&_nc_cat=109&_nc_oc=Q6cZ2QH_ZKRt3x8fnl6fjxC6heqMZy6uhgLhzvASOlFk06Sb4oK0F-NfJLua101TJ5844AU&_nc_ohc=ZpuSXpG3H2wQ7kNvwGz9ncI&_nc_gid=IOK2erPwpOrC4HlslnHB2A&edm=APs17CUBAAAA&ccb=7-5&oh=00_Afxq1W7qTMYcDUMtD5IAVQ4u6--QQ44sS_fACwXDnzLXRQ&oe=69B443DD&_nc_sid=10d13b
+alt = taste.daejeon님의 프로필 사진
+====================================================================================================
+src = https://scontent-icn2-1.cdninstagram.com/v/t51.2885-19/476477707_961617372597527_7529391344168117033_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby43MzYuYzIifQ&_nc_ht=scontent-icn2-1.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2QH_ZKRt3x8fnl6fjxC6heqMZy6uhgLhzvASOlFk06Sb4oK0F-NfJLua101TJ5844AU&_nc_ohc=ibboF7vC2dQQ7kNvwE-2Kre&_nc_gid=IOK2erPwpOrC4HlslnHB2A&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfwOWyAtR4zNy2DREN5DKauZIpp7AJUjY_ssy4JbhMh4yQ&oe=69B42E20&_nc_sid=10d13b
+...
+서울 서초구 서초대로77길 41 지하1,2층 1호
+
+#강남포차 #강남술집 #포차주식시장 #강남회식 #강남핫플
+====================================================================================================
+Output is truncated. View as a scrollable element or open in a text editor. Adjust cell output settings...
+최종 선택된 이미지 주소 : https://scontent-icn2-1.cdninstagram.com/v/t51.82787-15/629080156_18119848069601808_5339356349534164516_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=108&ig_cache_key=MzgyNjQ3MTgxMjAzNzkzOTk0OA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjc1Nng5NDAuc2RyLkMzIn0%3D&_nc_ohc=61kRcngErs8Q7kNvwH_lkP1&_nc_oc=AdlRSg37cVoncMKwNRLyfpb_E3MPk9oBKkC4xVwmvTKYLJ5hqVY7G6GC3V8rhkipzYY&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-icn2-1.cdninstagram.com&_nc_gid=IOK2erPwpOrC4HlslnHB2A&_nc_ss=8&oh=00_Afx9N_ia1TwisSRgZHMhmsWZSSPeas7DDyMnbs0YGm23TA&oe=69B42CD7
+최종 선택된 alt : 카리나 PICK! 태국음식 맛집✨
+
+오늘은 멀리 안 가도 현지의 맛 제대로 즐기는 날🔥
+강남에 숨은 태국 로컬 맛집 까폼!
+
+랭쌥, 팟타이, 똠얌꿍, 뿌님팟퐁커리까지
+메뉴 라인업부터가 진짜 태국 그 자체🍜🌶️
+특히 팟타이랑 텃만꿍은 호불호 없이 다들 픽하는 인기 메뉴👍
+
+지하에 위치한 매장은 이국적인 무드에
+깔끔한 인테리어로 편안하게 식사하기 딱 좋고✨
+가성비도 좋아서 배부르게 먹고 나오는 곳!
+직원분들도 친절해서 만족도 높음💛
+
+📍압구정로데오역, 까폼
+서울 강남구 선릉로153길 18 지하 1층
+
+#까폼 #강남태국음식 #태
+
+
