@@ -1,0 +1,547 @@
+빅카인즈라는 사이트에서 뉴스기사를 크롤링해올거야
+일단 전체적인 흐름을 말로 써봤거든
+이렇게 코딩하면 되는건지 
+내가 빼먹은 예외처리나, 더 생각해봐야 할거나, 명확하게 정하고 가야하는거 알려줘
+아직 코딩은 안해줘도 돼 
+
+
+빅카인즈라는 사이트 뉴스기사를 크롤링 해올거야 
+일단 전체적으로 어떻게 짤지 큰 틀은 정해봤거든 
+나랑 작은 것부터 코딩해보자 
+일단 작은게 실행이 되는지 보고, 큰 틀의 코딩을 하자 
+
+지금은 뭘 import 해야할지 알려줘 
+
+import 
+
+
+파일을 저장할 폴더만 입력받기 
+기본값 설정해두기 C:\\py_temp\\
+f_dir = input("2.파일을 저장할 폴더명만 쓰세요(기본경로:c:\\py_temp\\):")
+if f_dir == '' :
+    f_dir = "c:\\py_temp\\"
+
+
+sec_name = '뉴스기사'
+query_txt='빅카인즈'
+
+n = time.localtime()
+s1 = '%04d-%02d-%02d-%02d-%02d-%02d' % (n.tm_year, n.tm_mon, n.tm_mday, n.tm_hour, n.tm_min, n.tm_sec)
+
+os.makedirs(f_dir+s1+'-'+query_txt+'-'+sec_name)
+os.chdir(f_dir+s1+'-'+query_txt+'-'+sec_name)
+
+ff_dir=f_dir+s1+'-'+query_txt+'-'+sec_name
+ff_name=f_dir+s1+'-'+query_txt+'-'+sec_name+'\\'+s1+'-'+query_txt+'-'+sec_name+'.txt'
+fc_name=f_dir+s1+'-'+query_txt+'-'+sec_name+'\\'+s1+'-'+query_txt+'-'+sec_name+'.csv'
+fx_name=f_dir+s1+'-'+query_txt+'-'+sec_name+'\\'+s1+'-'+query_txt+'-'+sec_name+'.xlsx'
+
+
+
+
+비카인즈 url 접속
+접속하면 보이는 팝업창 2개 close눌러서 닫기 
+보이는 팝업이 있으면 닫고, 없으면 그냥 진행
+
+
+
+<div class="col-xs-4 text-right">
+					<button type="button" class="btn btn-secondary btn-cls" data-name="popup-dismiss" data-type="close">Close</button>
+				</div>
+
+<div class="col-xs-4 text-right">
+					<button type="button" class="btn btn-secondary btn-cls" data-name="popup-dismiss" data-type="close">Close</button>
+				</div>
+
+
+팝업창이 2개고, close가 저렇게 똑같으니까,
+html에서 더 큰걸 봐야 겠지
+id를 잡는게 제일 낫겠지? popup-head-135 이거 ?
+
+
+<div class="popup-container">
+<div class="popup-dialog" id="popup-dialog-135" style="width:400px" data-id="135" data-type="draggable" data-guid="046d3f88-1e5d-332c-f371-bc4ca42974d6" data- draggable="true">
+<div class="popup-body">
+<div class="popup-head" id="popup-head-135" style="background-color: #e8e8e8: cu rsor: move: "> </div>
+<div class="popup-footer">
+<div class="row">
+::before
+<div class="col-xs-8 text-left"></div>
+<div class="col-xs-4 text-right">
+<button type="button" class="btn btn-secondary btn-cls" data-name="popup- dismiss" data-type="close">Close</button> == $0
+</div>
+::after
+</div>
+</div>
+<img class="popupling" src="https://www.bigkinds.or.kr/resources/files/popup/p_2 0260225171541_261.png" title="0" alt="open api 39 *
+" onclick="javascript:linkPage=window.open('/resources/files/popup/p_202 60225171541_261.png');" tabindex="0">
+<a style="width:100%;height:100%; top:undefinedpx;left:0px" href="https://forms.
+gle/mb1d4jSFLhUnoSzv6" alt target="_blank"></a>
+</div>
+
+
+
+
+
+<div id="wrap" class="wrap">
+▼<div>
+<div class="popup-container">
+<div class="popup-dialog" id="popup-dialog-135" style="width:400px" data-id="135" data-type="draggable" data-guid="046d3f88-1e5d-332c-f371-bc4ca4297406 data-draggable="true"> <div class="popup-body">
+<div
+class="popup-head" id="popup-head-135" style="background-color: #e8e8e8: cursor:move: "> </div>
+<div class="popup-footer">
+<div class="row">
+::before
+▸ <div class="col-xs-8 text-left"></div>
+<div class="col-xs-4 text-right">
+<button type="button" class="btn btn-secondary btn-cls" data-name="popup-dismiss" data-type="close">Close</button>
+</div> :after </div> </div>
+<img class="popupling" src="https://www.bigkinds.or.kr/resources/files/popup/p_20260225171541_261.png" title="0" alt="open api onclick="javascrip
+t:linkPage=window.open("/resources/files/popup/p_20260225171541_261.png');" tabindex="0">
+<a style="width:100%;height:100%; top:undefinedpx;left:0px" href="https://forms.gl/mb1d4jSFLhUnoSzv6" alt target="_blank"></a> </div>
+</div>
+<div class="popup-dialog" id="popup-dialog-136" style="width:px" data-id="136" data-type="draggable" data-guid="8fab90a8-5e72-12bf-107d-3d274fc56b81" data-draggable="true"> <div class="popup-body">
+<div
+class="popup-head" id="popup-head-136" style="background-color: #e8e8e8: cursor:move: "> </div>
+<div class="popup-footer">
+<div class="row">
+::before
+<div class="col-xs-8 text-left"></div>
+<div class="col-xs-4 text-right">
+<button type="button" class="btn btn-secondary btn-cls" data-name="popup-dismiss" data-type="close">Close</button> == $0
+</div>
+after
+</div> </div>
+<img class="popupImg" src="https://www.bigkinds.or.kr/resources/files/popup/p_20260310151931_268.png" title="0" alt="2026 DICI onclick="ja
+vascript:linkPage=window.open('/resources/files/popup/p_20260310151931_268.png');" tabindex="0">
+<a style="width:100%;height:100%; top: undefinedpx;left:0px" href="https://mediastartup.co.kr" alt="2026 DICI E target="_blank"></a> </div>
+</div>
+</div>
+
+
+
+
+
+검색창 클릭 
+id="total-search-key" 이거 누른다고 하면 되려나? 
+
+
+검색어 입력받기 
+크롤링할 뉴스의 키워드는 무엇입니까? 
+입력받은 검색어 검색창에 넣고 
+
+상세검색 클릭 
+id="ig-sd-btn" 이거 누른다고 하면 되려나? 
+
+상세검색 팝업이 뜸
+
+
+<div class="bk_keywordSearch header">
+<input type="hidden" name="topicContent" value> <input type="hidden" name="search-keyword" value> <div class="hd-srch v2">
+<input type="hidden" id="is-sub-layout" value>
+<input type="hidden" id="search-form-data" name="jsonSearchParam"> <input type="hidden" name="index-name" value="news">
+<input type="hidden" id="networkNodeType" value>
+<input id="search-analyzer" type="hidden">
+<input id="search-scope" type="hidden">
+<input id="mainTodayPersonYn" type="hidden" name="N"> <ul class="bk_keywordSearchInput bk-shwrap"> (flex) <li class="srch-group"> flex
+<a href="#" class="bk_search_input_clear">keyword clear</a> <label for="total-search-key" class="sr-only"></label> <input type="text" id="total-search-key" class="bk_searchKeyword sear ch-key" placeholder="0" autocomplete="off"> <ul id="suggests-wrap" class="srch-word-wrp" style="display: none;"> </ul>
+<input type="hidden" id="topicOrigin" value>
+<button class="btn btn-default main-search_warning-btn keyword-warni ng-btn option-btn hidden type="button"> </button>
+<a href="#" class="bk_keywordSearchBtn news-search-btn" title=""> <span></span>
+</a>
+</li>
+▼<li>
+<div class="searchHelp">(lex)
+<button type="button" class="bk_searchDetailBtn" id="ig-sd-btn" title=""></button> = $0
+<button type="button" class="bk_searchDetailBtn" title=" data-toggle="modal" data-target="#searchHelpPop">
+</button>
+</div>
+</li>
+
+
+
+
+
+상세 검색 창이 기존의 창 위에 뜬다. 
+기간 설정하고, 상세검색 조건을 넣을거다. 
+
+맨 위에 기간, 언론사, 통합분류, 사건사고분류, 상세검색 
+중간에 1일, 1주, 1개월, 3개월, 6개월, 1년
+(현재일을 기준으로만 가능한 듯, 1년을 누르면 오늘날짜부터 1년전날짜까지 조회됨)  
+마지막에 시작날짜 입력, 종료날짜 입력 
+
+지금은 기간 설정할때 직접 시작날짜와 종료날짜를 입력받는걸로 설정하자. 
+
+날짜창 클릭
+기본으로 입력되어 있는 날짜 YYYY-MM-DD 형식으로 2025-12-13 가 입력되어있는데, 먼저 이걸 지워야 함
+키보드 backspace 눌러서 지우는게 낫나? 
+근데 마우스 커서가 글자 맨뒤로 가야 하는데, 
+글자 앞을 누르면 backspace 눌러도 지워지지 않음 -> 이러면 힘드니까, 
+
+이 방식으로 지우자.  
+input 클릭
+Ctrl + A
+Delete 또는 Backspace
+새 값 입력 
+
+조회할 날짜 입력하기 
+시작날짜 입력받아서 입력하기 
+종료날짜 입력받아서 입력하기 
+아무런 날짜도 입력받지 않으면 어떻게 설정하지?
+일단 기본으로 날짜가 현재일부터 3개월로 셋팅되어 있긴 한데 그냥 그거 본다고 할까? 
+
+일단 지금 기간 설정이랑, 상세검색을 할거고, 
+나중에는 언론사, 통합분류, 사건사고분류도 할거니까 일단 크게 잡는게 나은가?
+
+
+
+
+상세검색 팝업 맨위에 줄에 있는 상세검색 클릭
+단어 중 1개 이상 포함 입력창에 입력받은 입력어 입력하기
+(여러 단어 일 경우 , 콤마로 구분한다.)
+
+다음단어 제외 입력창에 입력받은 입력어 입력하기 
+(이건 하나의 단어만 되는 듯?) 
+
+전쟁을 입력하고, 미국, 트럼프라는 단어를 포함시키고, 김정은, 북한이라는 단어를 제외한다고 입력하니까 
+전쟁 AND (미국 OR 트럼프) NOT(김정은 북한 )
+이렇게 됨 
+
+적용하기 클릭하면, 페이지가 이동한다. 
+<div class="item item3 detail-search-group" data-group="news" style="display: flex;">
+								<div class="form-flex">
+									<em>단어 중 1개 이상 포함</em>
+									<div class="form-flexible">
+										<label for="orKeyword1" class="sr-only"></label>
+										<input id="orKeyword1" type="text" class="form-control w-100 detail-keyword keyword-or" data-seq="0" placeholder="단어 입력 (단어가 여럿일 경우 ‘,’로 분리)">
+									</div>
+								</div>
+								<div class="form-flex">
+									<em>다음단어 모두 포함</em>
+									<div class="form-flexible">
+										<label for="andKeyword1" class="sr-only"></label>
+										<input id="andKeyword1" type="text" class="form-control w-100 detail-keyword keyword-and" data-seq="0" placeholder="단어 입력">
+									</div>
+								</div>
+								<div class="form-flex">
+									<em>정확히 일치하는 단어</em>
+									<div class="form-flexible">
+										<label for="exactKeyword1" class="sr-only"></label>
+										<input id="exactKeyword1" type="text" class="form-control w-100 detail-keyword keyword-exact" data-seq="0" placeholder="검색어 처리를 바이그램으로 선택하시면 더 정확한 결과를 얻을 수 있습니다.">
+									</div>
+								</div>
+								<div class="form-flex">
+									<em>다음단어 제외</em>
+									<div class="form-flexible">
+										<label for="notKeyword1" class="sr-only"></label>
+										<input id="notKeyword1" type="text" class="form-control w-100 detail-keyword keyword-not" data-seq="0">
+									</div>
+								</div>
+							</div>
+
+
+
+
+<div class="md-foot-wrap">
+							<span style="color: #1578FF;">※ 검색어를 입력하면 최대 5년, 입력하지 않으면 최대 1년까지 검색할 수 있습니다.</span>
+							<div class="modal-btn-wrap m1024-btn-wrap">
+								<button type="button" class="reset-btn gray-btn fn-center clear-filter-btn">
+									<img src="/assets_2024/img/icon/reset.svg;Bigkinds=B83E593309BF98F660E2F6F372F623BD.tomcat2" alt="">
+									<span>초기화</span>
+								</button>
+								<button type="button" class="apply-btn primary-btn news-search-btn">
+									<span>적용하기</span>
+								</button>
+							</div>
+						</div>
+
+
+
+전체를 잡고, 기간, 상세검색을 누르는게 나은가? 
+위쪽에 기간, 언론사, 통합분류, 사건사고분류, 상세검색이 있는 부분을 잡고, 기간 상세검색을 누르는게 나은가? 
+
+일단 창이 열리면 기간이 클릭되어있으니까,
+시작날짜 
+id="search-begin-date"
+종료날짜
+id="search-end-date"
+ 하고나서, 상세검색 클릭해서 하는게 맞지?
+
+<div class="modal-wrap modal-1024 modal-fade modal-bg"> == $0 <div class="modal-content">(flex) <div class="modal-header"></div> (flex <!--> <div class="ds-tab-wrap"> <ul class="ds-tab-inner"> Flex <li class="horiz"></li> <li class="on">@</li> ►<li>@</li> > <li>@</li> ►<li>@</li> ►<li>@</li> </ul> </div> <div id="srch-tab1" class="ds-tab-con open datepicker"> ▸ <div class="ds-term-sel"> </div> flex) <div class="ds-date-box"> <!</p> -> <div class="date-ip-wrap form-flex">(flex <label for="search-begin-date"> <input type="text" id="search-begin-date" class="form-control input-date input-dateFrom hasDatepi cker" placeholder="YYYY-MM-D0" title=""> after </label> <span></span> <label for="search-end-date"> <input type="text" id="search-end-date" class="form-control input-date input-dateTo hasDatepicke r" placeholder="YYYY-MM-DD" title="2"> after </label> </div> </div>
+
+아래에서 시작기간 클릭해서, 입력받은 날짜 넣고 종료기간 클릭해서, 입력받은 날짜 넣고 <div class="ds-date-box"> <!-- <p>직접입력</p> --> <div class="date-ip-wrap form-flex"> <label for="search-begin-date"> <input type="text" id="search-begin-date" class="form-control input-date input-dateFrom hasDatepicker" placeholder="YYYY-MM-DD" title="시작 기간"> </label> <span>~</span> <label for="search-end-date"> <input type="text" id="search-end-date" class="form-control input-date input-dateTo hasDatepicker" placeholder="YYYY-MM-DD" title="종료 기간"> </label> </div> </div>
+
+
+아래에서 상세검색 클릭해서, 이동하고 <div class="ds-tab-wrap"> <ul class="ds-tab-inner"> <li class="horiz"></li> <li class="on"> <a href="#" class="tab-btn btn1">기간</a> </li> <li> <a href="#" class="tab-btn btn2">언론사</a> </li> <li> <a href="#" class="tab-btn btn3">통합분류</a> </li> <li> <a href="#" class="tab-btn btn4">사건사고 분류</a> </li> <li> <a href="#" class="tab-btn btn5">상세검색</a> </li> </ul> </div>
+
+
+
+
+
+if문 써서 만약에 공백이면, 그냥 엔터 이거를 추가로 넣어야 할듯
+그러면 원래 입력된 기본값으로 입력이 된다. 
+그리고 날짜 형식 YYYY-MM-DD 형식을 맞춰서 넣어야 하는데
+일단은 그냥 넘기는게 낫나? 아니면 형식에 안맞는다고 말나오게만 할까?
+
+
+
+
+
+
+
+
+
+
+뭐 검색하고, 설정한건지 보여주기 
+전쟁 AND (미국 OR 트럼프) NOT(김정은 북한 ) 이게 화면에 나옴 
+
+검색된 기수의 총 개수 보여주기 
+그 중에 몇건의 기사를 크롤링할지 입력받기 
+조회된 기사수 보다 더 많은 수를 크롤링하고 싶다 입력받으면 최대수 만큼 크롤링하기
+요청 수집 건수가 미입력이거나, 0일때, 50건만 조회하기 (전체로 하면 너무 많은 것 같은데, 아직 테스트 중이라 짧게 보는게 나을듯) 
+
+검색결과가 0건인 경우, 사용자에게 0건 안내, 
+빈 DataFrame으로 저장하지 않고 종료하는게 나은가? 빈거라도 저장하는게 나은가? 
+-> 저장하지 말자 
+
+<div class="data-result-hd pc-only paging-v2-wrp" style="margin-top: 0px;">
+									<h3>
+										<span class="total-search-key-wrap" style="">
+	                                       	"<span class="total-search-key text-primary" style="padding-right:0px;">전쟁 AND  (트럼프 OR  미국)  NOT(김정은)</span>"
+                                        </span>
+										
+										
+										<span class="search-info-detail-desc" data-index="speaker" style="display: none;">
+											정보원이 '<span class="primary-text quotation-keyword3"></span>'인
+										</span>
+										<span class="search-info-sub-desc" data-index="news" style="">
+											뉴스 검색 결과
+										</span>
+										<span class="search-info-sub-desc" data-index="news_quotation" style="display: none;">
+											인용문 추출 결과
+										</span>
+										<span class="search-info-sub-desc" data-index="editorial" style="display: none;">
+											사설 검색 결과
+										</span>
+										<span class="total-news-cnt">89,883</span> 건입니다.
+									</h3>
+									<div class="ml-auto-cp">
+										<i class="icon-time">시계</i>
+										<small>
+											<span class="start-date-key">2025-03-03</span> ~ <span class="end-date-key">2026-03-13</span> 기준
+										</small>
+									</div>
+								</div>
+
+
+
+더 큰걸 안잡고, 저기 안에서 일단, 
+어떤 조건을 걸었는지, 검색 결과는 몇건인지 보여주는게 낫지? 
+class로 뽑아야 하나? 
+
+
+
+다른 기본적인 방식 사용해서는 어떻게해?
+메뉴 클릭하고, 그 다음에 선택 그런 방식? 
+
+
+
+
+근데 이따가, 몇건씩 나눠서 보기에 따라 
+페이지를 언제 넘길지를 설정해야 하지?
+그러면 지금 10건씩 보기로 하면, 이따가 10건 다보면 다음페이지로 넘겨야 하잖아 
+100건씩 보기로 하면, 100건 다 보고 넘겨야 하고
+
+
+
+
+
+최신순이라고 나와있는 메뉴 눌러서 
+최신순
+정확도순
+과거순 
+3개 중 하나 클릭 
+사용자가 원하는대로 해야 한단 말이지
+어떻게 입력을 받아서 저걸 클릭하는게 제일 좋을까. 
+
+
+10건씩보기 라고 나와있는 메뉴 눌러서 
+10건씩보기
+30
+50
+100
+4개 중 하나 클릭해야 하는데, 
+사용자가 원하는대로 해야 한단 말이지
+어떻게 입력을 받아서 저걸 클릭하는게 제일 좋을까. 
+
+
+
+여기서 다음페이지 누르는거 짜려면, 아까 위에서 
+기사 표시 개수 선택 count_input 
+최종수집 건수 collect_count 
+
+이거 활용해서 만들면 되는거지?
+
+
+
+
+
+
+
+너무 크게 잡지는 않아도 된다는거지? 
+id="news-results"
+data-id="04100058.20260313124703001"
+
+class="title-elipsis" class사용하거나, 텍스만 그냥 뽑아도 되나?
+
+class="info"
+노컷뉴스
+2026/03/13 
+CBS노컷뉴스 최창민 기자 최창민
+저건 어떻게 뽑지...
+
+box는 뭐야? 저거 말고 다르게 못해?
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+Cell In[80], line 1
+----> 1 news_id = box.get_attribute("data-id")
+
+NameError: name 'box' is not defined
+
+
+
+
+뉴스 목록에서, 아래는 조회가능  
+ 
+뉴스제목 
+언론사명
+게시날짜 
+기자 (기자 이름이 없을 수도 있음
+이 코드 지금 괜찮아? 
+
+
+제목클릭하면 지금 접속하고 있는 창위에 상세페이지가 뜸(중앙에 네모 모양으로 뜸) 
+본문내용은 제목을 클릭해야지만 뜸
+그러면 목록에서 일단 뽑을 수 있는거 다 뽑고, 제목 누르고 본문내용 뽑는게 나은가?
+아니면 제목 뽑고, 다 한번에 뽑는게 나은가?
+일단 목록에서 뽑을 수 있는거 다 뽑고 상세페이지로 들어가자. 
+상세페이지에서 본문내용 뽑기 
+( 이때 줄바꿈같은건 없애는게 낫겠지? 
+
+본문내용 
+언론사명 
+뉴스제목 
+게시날짜 
+기자 
+
+
+
+저기서 이제 제목 누르고 들어가서, 뉴스기사 전체 내용을 뽑아야 하거든 그건 어떻게 해? 
+일단 하나만 되나 테스트 해보고, 입력받은 건수만큼 뉴스기사 뽑을거야 
+
+
+
+
+
+<div id="news-results" class="news-wp type-wz no-rev" style="padding-bottom: 0px; ">
+<div class="news-item" data-id="01101202.20260303115554001">
+<div class="news-inner"> <ex
+<div class="thumb"></div>
+<div class="cont">
+<a href="#" class="news-detail" data-news id="01101202.20260303115554001" title=
+"팝업창이 열림">
+<div class="title-cp">
+<strong class>
+<span class="title-elipsis" style="text-decolation:underline;">  이스라엘엘 위한 전쟁" 트럼프 이란 공습에 'MAGA' 균열</span>
+</strong>
+</div>
+▸ <p class="text" data-news id="01101202.20260303115554001"></p>
+</a>
+<div class="info">@</div>
+</div>
+
+
+
+
+
+제목 누르고 들어가서, 
+기사 내용 뽑기 
+창닫고 다시 목록으로 돌아가서, 입력받은 횟수 만큼 다음 기사 선택하기
+
+이거 할건데, 누르는 법 알려줘 
+
+
+h5에서 text 다 뽑고 
+
+class="news-view-content" 에서도 text 다 뽑으면 되려나??
+
+
+
+맨아래 닫기 누르면 다시 목록창으로 돌아감
+혹은 다음글 누르면 다음글로 넘어감 
+그런데 1페이지의 글을 다 보면, 2페이지의 목록창으로 가게 됨
+
+
+목록창으로 돌아가서 다음글 제목 누르는게 나은가? 아니면 
+상세창 들어갔을때 바로 다음글 눌러서 넘어가는게 나은가? 
+
+목록창에 10건의 뉴스가 있음 
+오른쪽 화살표를 누르면 다음창으로 넘어감 
+
+-> 상세페이지 닫고 다시 목록으로 돌아가는걸로 하자 
+검색 결과 목록 페이지 진입
+현재 페이지 기사 카드들 수집
+각 기사 클릭 → 상세 본문 수집 → 닫기/복귀
+현재 페이지 끝나면 다음 페이지 이동
+목표 건수 도달 시 종료
+
+원하는 건수만큼 뉴스 기사를 조회한 뒤 
+
+csv xlsx 파일로 저장하면 됨
+
+
+
+
+
+
+
+
+
+
+
+
+내가 너랑 같이 하루종일 빅카인즈 크롤링 코드를 만들었잖아. 
+결국에 대충 해냈고
+다 니가 만들긴 했지만.
+
+근데 내가 스스로도 직접 너 없이도 이 코드를 짜야해 
+나중에 코딩 면접도 있고 하니까.
+
+그러기 위해서는 어떻게 공부하고, 생각하고, 암기해야 하는지 알려줘
+스스로 코딩을 하기까지 얼마만큼의 시도와 시간과 노력이 필요할지 말해줘 
+
+
+
+
+
+
+
+어떻게 짜야지 쉽게 짜는건지, 오류가 없는건지, 개념을 활용한건지, 등등 
+그리고 이게 나중에 어떻게 또 활용할 수 있을지, 파생되는지 등등
+나는 아직 코드를 따라치거나, AI의 도움을 받아서 코드를 만들어낸 정도지, 아직 직접 코드를 짤 줄은 몰라.
+말로 설계하는 것도 잘 몰라서 AI의 도움을 받는 중이고.
+
+일단 두 코드가 같은 작업을 하는건데, 뭐가 다른건지 말해봐 
+
+
+
+
+
+
+
+
+
+
+
+
+
